@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Niña Preciosa 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --primary-glow: #ff758f;
+            --bg-dark: #0d0914;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Foto 1 de Fondo nítida en toda la pantalla */
+        .bg-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("WhatsApp Image 2026-11-09 at 12.30.06 PM.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.5) contrast(1.1);
+            z-index: -2;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(13, 9, 20, 0.75) 0%, rgba(20, 10, 30, 0.85) 100%);
+            z-index: -1;
+        }
+
+        /* Lluvia de Estrellas y Corazones en los lados */
+        .falling-symbols {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .symbol {
+            position: absolute;
+            top: -10%;
+            color: rgba(255, 133, 161, 0.75);
+            animation: fall linear infinite;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20vh) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.9;
+            }
+            80% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Pantalla de Inicio / Sobre */
+        #cover-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 9, 20, 0.96);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #cover-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .heart-icon {
+            font-size: 90px;
+            animation: heartBeat 1.2s infinite;
+            cursor: pointer;
+            filter: drop-shadow(0 0 25px rgba(255, 77, 109, 0.9));
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+
+        .btn-open {
+            margin-top: 25px;
+            padding: 16px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #ff4d6d, #c77dff);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(255, 77, 109, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .btn-open:hover {
+            transform: translateY(-3px) scale(1.06);
+            box-shadow: 0 0 35px rgba(255, 77, 109, 0.9);
+        }
+
+        /* Contenido Principal Fluido en Pantalla */
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 80px 20px 140px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            text-align: center;
+            color: #ff85a1;
+            text-shadow: 0 0 25px rgba(255, 133, 161, 0.9);
+            margin-bottom: 40px;
+        }
+
+        /* Contenedor para fotos elegantes intercaladas */
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .inline-photo {
+            width: 65%;
+            max-width: 360px;
+            height: auto;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 77, 109, 0.5);
+            transition: transform 0.4s ease;
+        }
+
+        .inline-photo:hover {
+            transform: scale(1.04);
+        }
+
+        /* Texto de la Carta fluido y nítido */
+        .letter-content {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: #f7f7f9;
+            text-align: justify;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .letter-content p {
+            margin-bottom: 28px;
+        }
+
+        .highlight {
+            color: #ff85a1;
+            font-weight: 600;
+            font-size: 1.25rem;
+            text-shadow: 0 0 15px rgba(255, 133, 161, 0.8);
+        }
+
+        /* Reproductor de Música Flotante y Visible */
+        .music-control {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(20, 15, 30, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 77, 109, 0.6);
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 90;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+
+        .music-btn {
+            background: var(--primary);
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
+            transition: transform 0.2s;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 40px 15px 120px 15px; }
+            .title { font-size: 2.8rem; }
+            .letter-content { font-size: 1.05rem; }
+            .inline-photo { width: 85%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Foto 1 en Fondo de pantalla -->
+    <div class="bg-fullscreen"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Sintetizador de audio web en tiempo real con melodía romántica infalible (sin depender de archivos externos bloqueados) -->
+    <script>
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let melodyInterval = null;
+
+        function startRomanticMusic() {
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (isMusicPlaying) return;
+            isMusicPlaying = true;
+            document.getElementById('playBtn').innerText = '⏸';
+
+            // Notas suaves estilo cajita musical romántica
+            const notes = [523.25, 587.33, 659.25, 698.46, 783.99, 880.00, 987.77, 1046.50];
+            const chordProgression = [
+                [523.25, 659.25, 783.99], // C
+                [440.00, 523.25, 659.25], // Am
+                [349.23, 440.00, 523.25], // F
+                [392.00, 493.88, 587.33]  // G
+            ];
+
+            let chordIndex = 0;
+            let noteIndex = 0;
+
+            melodyInterval = setInterval(() => {
+                if (!isMusicPlaying) return;
+                
+                // Tocar acorde de fondo suave
+                let chord = chordProgression[chordIndex % chordProgression.length];
+                chord.forEach(freq => {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq / 2, audioCtx.currentTime);
+                    
+                    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 2.5);
+                });
+
+                // Tocar nota melódica
+                let oscNote = audioCtx.createOscillator();
+                let gainNote = audioCtx.createGain();
+                oscNote.type = 'triangle';
+                oscNote.frequency.setValueAtTime(notes[noteIndex % notes.length], audioCtx.currentTime);
+                
+                gainNote.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gainNote.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+                
+                oscNote.connect(gainNote);
+                gainNote.connect(audioCtx.destination);
+                oscNote.start();
+                oscNote.stop(audioCtx.currentTime + 1.2);
+
+                noteIndex++;
+                if (noteIndex % 4 === 0) {
+                    chordIndex++;
+                }
+            }, 1200);
+        }
+
+        function stopRomanticMusic() {
+            isMusicPlaying = false;
+            if (melodyInterval) {
+                clearInterval(melodyInterval);
+                melodyInterval = null;
+            }
+            document.getElementById('playBtn').innerText = '▶';
+        }
+
+        function toggleAudio() {
+            if (isMusicPlaying) {
+                stopRomanticMusic();
+            } else {
+                startRomanticMusic();
+            }
+        }
+    </script>
+
+    <!-- Símbolos cayendo por los lados (Estrellas y Corazones) -->
+    <div class="falling-symbols" id="falling-container"></div>
+
+    <!-- Pantalla de Inicio / Sobre -->
+    <div id="cover-screen">
+        <div class="heart-icon" onclick="openLetter()">💖</div>
+        <h2 style="margin-top: 20px; font-weight: 400; color: #ffe6ea;">Tengo algo especial para ti</h2>
+        <button class="btn-open" onclick="openLetter()">ABRIR MI CARTA 💌</button>
+    </div>
+
+    <!-- Contenido Principal Fluido en Pantalla -->
+    <div class="container">
+        <h1 class="title">Hola mi amor, mi niña preciosa 💘</h1>
+
+        <div class="letter-content">
+            <p>Hola mi amor, mi niña preciosa, mi cosita hermosa.</p>
+            
+            <p>Hoy es tu día y no quería dejarlo pasar sin escribirte algo que salga de lo más profundo de mi corazón. No sé si las palabras me alcancen para explicarte todo lo que siento por ti, pero quiero intentarlo, porque mereces saber lo importante que eres para mí y lo muchísimo que te amo.</p>
+            
+            <p>Primero que todo, gracias a Diosito por crear a una de las mujeres más importantes en mi vida, por haber llegado a mi vida y por convertirte en esa personita que, sin darse cuenta, se volvió tan importante para mí. Desde que llegaste, ocupaste un lugar en mi corazón que nadie más podría ocupar. Eres mi felicidad, mi tranquilidad, mi compañía, mi mejor amiga y esa mujer con la que quiero compartir tantas cosas.</p>
+            
+            <p class="highlight">Y quiero que entiendas algo: YO TE AMO ASÍ, TAL Y COMO ERES.</p>
+            
+            <p>Te amo cuando estás feliz, cuando estás triste, cuando estás de mal genio, cuando tienes tus días difíciles, cuando te pones celosa, cuando me haces renegar, cuando a veces no te entiendo y hasta cuando me confundes. Te amo incluso en esos momentos en los que no sabemos cómo explicarnos lo que sentimos. No necesito que seas perfecta para amarte, porque me enamoré de ti, de tu forma de ser, de tus locuras, de tus detalles y hasta de esas cositas tuyas que a veces me hacen perder la paciencia.</p>
+
+            <!-- Foto 2 con tamaño ideal -->
+            <div class="photo-container">
+                <img src="WhatsApp Image 2026-11-09 at 12.30.07 PM.jpeg" alt="Foto juntos" class="inline-photo">
+            </div>
+
+            <p>Sé que no siempre somos fáciles, que a veces tenemos problemas, que podemos discutir, equivocarnos o decir cosas que no queríamos decir. Pero, mi amor, quiero que sepas que ninguna dificultad cambia lo que siento por ti. No quiero una relación donde nunca existan problemas, quiero una donde, a pesar de ellos, tengamos las ganas de solucionarlos, de escucharnos y de seguir eligiéndonos.</p>
+            
+            <p>Mi carechimba hermosa, nunca pienses que por un mal momento voy a dejar de quererte. Tú eres mi niña, mi cosita, mi misa y mi mujer. Y aunque a veces no sepa cómo demostrarte todo lo que llevo dentro, créeme que mi corazón tiene un amor inmenso por ti.</p>
+            
+            <p>Quiero estar en tus días buenos, pero también en esos días donde sientas que nada sale bien. Quiero escucharte cuando necesites hablar, celebrar tus logros, acompañarte en tus sueños y recordarte lo maravillosa que eres cuando tú misma lo olvides. Quiero ser esa persona con la que puedas contar, con la que puedas ser tú misma sin miedo a que te juzguen.</p>
+
+            <!-- Foto 3 con tamaño ideal -->
+            <div class="photo-container">
+                <img src="WhatsApp Imagen 2026-11-09 at 12.30.06 PM.jpeg" alt="Foto sonriendo" class="inline-photo">
+            </div>
+
+            <p>No sabes cuántas veces me pongo a pensar en nuestro futuro y en todas las cosas bonitas que todavía nos faltan por vivir. Me imagino más cumpleaños juntas, más abrazos, más besos, más risas, más locuras y muchísimos recuerdos. Quiero seguir conociendo cada parte de ti, incluso esas que todavía no me has mostrado.</p>
+            
+            <p>Hoy le pido a la vida que te regale muchísimos años más, que todos tus sueños se cumplas, que nunca pierdas esa esencia tan tuya y que siempre tengas motivos para sonreír. Ojalá algún día puedas verte con mis ojos y entender lo especial, valiosa y hermosa que eres para mí.</p>
+            
+            <p>Y si algún día llegas a dudar de mi amor, vuelve a leer estas palabras. Recuerda que aquí hay alguien que te ama con tus días buenos y malos, con tus virtudes y defectos, con tus celos, tus enojos, tus ocurrencias y absolutamente todo lo que te hace ser tú.</p>
+            
+            <p>No quiero un amor perfecto, quiero seguir aprendiendo a amar contigo. No quiero solamente los momentos bonitos, quiero que podamos superar juntas los difíciles. No quiero que seas alguien pasajero en mi vida, quiero que seas parte de mis recuerdos más bonitos y de todos esos sueños que todavía quiero cumplir.</p>
+            
+            <p class="highlight">Gracias por cada beso, cada abrazo, cada mensaje, cada llamada y cada instante que me has regalado.</p>
+            
+            <p>Perdóname también por las veces en que no he sabido expresarte lo que siento o no he sabido entenderte. Yo también estoy aprendiendo y quiero seguir mejorando por mí, por ti y por lo bonito que tenemos. Te Amo Mujer, Y como te lo dije el sábado eres hermosa con maquillaje o sin él, siempre Te ves hermosa ante mis ojos. Discúlpame por tratarte feo a veces, es que ni yo me entiendo, es que Tú Me confundes demasiado... Pero Te Amoooo chiquita mi única mebecita. Y como tú dijiste, eres mi karma... ¡Pero el mejor karma que he tenido! 💘</p>
+        </div>
+    </div>
+
+    <!-- Control de Música Flotante -->
+    <div class="music-control">
+        <span>🎵 Melodía Romántica</span>
+        <button class="music-btn" id="playBtn" onclick="toggleAudio()">▶</button>
+    </div>
+
+    <script>
+        function openLetter() {
+            document.getElementById('cover-screen').classList.add('hidden');
+            startRomanticMusic();
+            
+            confetti({
+                particleCount: 100,
+                spread: 110,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#c77dff', '#ffffff']
+            });
+        }
+
+        // Generar lluvia constante de estrellas y corazones por los lados
+        const symbolsContainer = document.getElementById('falling-container');
+        const symbolChars = ['💖', '✨', '⭐', '❤️', '💫', '💕'];
+
+        function createSymbol() {
+            const el = document.createElement('div');
+            el.className = 'symbol';
+            el.innerText = symbolChars[Math.floor(Math.random() * symbolChars.length)];
+            
+            let leftPos;
+            if (Math.random() > 0.5) {
+                leftPos = Math.random() * 25; // Lado izquierdo (0% - 25%)
+            } else {
+                leftPos = 75 + Math.random() * 25; // Lado derecho (75% - 100%)
+            }
+            
+            el.style.left = leftPos + 'vw';
+            el.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
+            
+            const duration = Math.random() * 5 + 5;
+            el.style.animationDuration = duration + 's';
+            
+            symbolsContainer.appendChild(el);
+
+            setTimeout(() => {
+                el.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createSymbol, 300);
+    </script>
+</body>
+</html>
